@@ -53,8 +53,8 @@ class ApiService {
     return this.request('/auth/me');
   }
 
-  // Agent endpoints
-  async getAgents() {
+  // Agent endpoints - using getAllAgents for compatibility
+  async getAllAgents() {
     return this.request('/agents');
   }
 
@@ -82,8 +82,8 @@ class ApiService {
     });
   }
 
-  // Page endpoints
-  async getPages() {
+  // Page endpoints - using getAllPages for compatibility
+  async getAllPages() {
     return this.request('/pages');
   }
 
@@ -118,7 +118,11 @@ class ApiService {
     });
   }
 
-  // Conversation endpoints
+  // Conversation endpoints - using getAllConversations for compatibility
+  async getAllConversations() {
+    return this.request('/conversations');
+  }
+
   async getConversations(pageId: string) {
     return this.request(`/conversations/page/${pageId}`);
   }
@@ -127,10 +131,17 @@ class ApiService {
     return this.request(`/conversations/${id}`);
   }
 
-  async createOrUpdateConversation(conversation: any) {
+  async createConversation(conversation: any) {
     return this.request('/conversations', {
       method: 'POST',
       body: JSON.stringify(conversation),
+    });
+  }
+
+  async updateConversation(id: string, updates: any) {
+    return this.request(`/conversations/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(updates),
     });
   }
 
@@ -142,6 +153,12 @@ class ApiService {
 
   async deleteConversation(id: string) {
     return this.request(`/conversations/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async clearAllConversations() {
+    return this.request('/conversations/clear', {
       method: 'DELETE',
     });
   }
@@ -176,6 +193,13 @@ class ApiService {
     });
   }
 
+  async createBulkMessages(messages: any[]) {
+    return this.request('/messages/bulk', {
+      method: 'POST',
+      body: JSON.stringify({ messages }),
+    });
+  }
+
   async sendMessage(data: any) {
     return this.request('/messages/send', {
       method: 'POST',
@@ -195,8 +219,8 @@ class ApiService {
     });
   }
 
-  // Link endpoints
-  async getLinks() {
+  // Link endpoints - using getAllLinks for compatibility
+  async getAllLinks() {
     return this.request('/links');
   }
 
@@ -224,8 +248,8 @@ class ApiService {
     });
   }
 
-  // Media endpoints
-  async getMedia() {
+  // Media endpoints - using getAllMedia for compatibility
+  async getAllMedia() {
     return this.request('/media');
   }
 
@@ -238,6 +262,10 @@ class ApiService {
       method: 'POST',
       body: JSON.stringify(media),
     });
+  }
+
+  async createMedia(media: any) {
+    return this.uploadMedia(media);
   }
 
   async deleteMedia(id: string) {
